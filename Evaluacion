@@ -1,0 +1,96 @@
+#Evaluaciòn sumativa 3
+import random
+import csv
+import os
+Menu = 0
+MMenu = 0
+Saco5KL = 0
+Saco10kl = 0
+Saco20KL = 0
+pedidos = 0
+Comuna = 0
+Direccion = 0
+NumeroDePedido = 0
+LP = "cls"
+os.system(LP)
+def ingreso():
+    nombre = input("Ingrese su Nombre y Apellido: ")
+    try:
+        NumeroDePedido = float(input(f"Ingrese el pedido para {NumeroDePedido}: "))
+    except ValueError:
+        print("Ingrese el pedido correctamente")
+        return
+    pedido = {
+        "Nombre": nombre,
+        "Direccion": Direccion,
+        "Comuna": Comuna,
+        "Saco 5kg": Saco5KL,
+        "Saco 10 kg": Saco10kl,
+        "Saco 20kg": Saco20KL
+    }
+
+    pedidos.append(pedido)
+    print("Pedido agregado exitosamente")
+
+def listado():
+    if not pedido:
+        print("No hay pedidos ingresados")
+        return
+    output = "\n Cliente\t\t\t\t\tCliente\t\t\t\t\tDireccion\t\t\t\t\tComuna\t\t\t\t\tSaco 5kg\t\t\t\t\tSaco 10kg\t\t\t\t\tSaco 20kg\n"
+    output += "-" * 95 + "\n"
+    
+    for pedido in pedidos:
+        output += input(f"{pedido['Cliente']} {pedido['Direccion']} {pedido['Comuna']} {pedido['Saco 5kg']} {pedido['Saco 10 kg']} {pedido['Saco 20 kg']}")
+        print (output)
+
+def guardarcsv():
+    with open("pedido.csv", mode="w", newline="") as archivo:
+        escribir = csv.writer(archivo)
+        escribir.writerow(["Cliente", "Direccion", "Comuna", "Saco 5kg", "Saco 10kg", "Saco 20kg"])
+        for pedido in pedidos:
+            escribir.writerow([
+                pedido["Cliente"],
+                pedido["Direccion"],
+                pedido["Comuna"],
+                pedido["Saco 5kg"],
+                pedido["Saco 10kg"],
+                pedido["Saco 20kg"]
+            ])
+
+def cargarcsv():
+    if os.path.exists("pedidos.csv"):
+        with open("pedidos.csv", mode="r", newline="") as archivo:
+            reader = csv.DictReader(archivo)
+            for i in reader:
+                cargar = {
+                    "Cliente": i["Cliente"],
+                    "Direccion": i["Cargo"],
+                    "Comuna" : i["Comuna"],
+                    "Saco 5kg" : i["Saco 5kg"],
+                    "Saco 10kg" :i["Saco 10kg"],
+                    "Saco 20kg" :i["Saco 20kg"]
+                }
+                pedidos.append(NumeroDePedido)
+def Menu():
+    cargarcsv
+    MMenu = 0
+    while MMenu == 0:
+        print("\t\t*Bienvenido a CatPremium*\n")
+        print("1) Ingresar Pedido")
+        print("2) Listado de todos los pedidos")
+        print("3) Imprimir hoja de ruta")
+        print("4) Salir")
+        try:
+            respuesta = int(input("Ingrese la acción que desea realizar: "))
+            if respuesta == 1:
+                ingreso()
+            elif respuesta == 2:
+                listado()
+            elif respuesta == 3:
+                guardarcsv()
+            elif respuesta == 4: 
+                guardarcsv()
+                print("Saliendo del programa, hasta luego...!")
+                MMenu = 1
+        except ValueError:
+            print("Ingrese una opción válida")
